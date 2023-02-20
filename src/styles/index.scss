@@ -1,0 +1,81 @@
+// 全局 CSS 变量
+@import "./variables.css";
+// Transition
+@import "./transition.scss";
+// Element Plus
+@import "./element-plus.scss";
+// Vxe Table
+@import "./vxe-table.scss";
+// 注册多主题
+@import "./theme/register.scss";
+
+// 业务页面几乎都应该在根元素上挂载 class="app-container"，以保持页面美观
+.app-container {
+  padding: 20px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: var(--v3-body-bg-color);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: "微软雅黑" !important;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+a,
+a:focus,
+a:hover {
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+/* 滚动条宽高，横向滚动条的高，纵向滚动条的宽 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* 滚动轨道 */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 5px;
+}
+
+@mixin con() {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  @include con;
+  align-content: flex-start;
+}
+
+.container-center {
+  @include con;
+  align-items: center;
+}
