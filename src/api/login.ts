@@ -39,7 +39,7 @@ export function loginA(data: ILoginData) {
 export function getUserInfoApi() {
   return request({
     url: "api/user/info",
-    method: "get"
+    method: "post"
   })
 }
 

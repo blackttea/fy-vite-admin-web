@@ -8,7 +8,6 @@ import "@/router/permission"
 import { loadSvg } from "@/icons"
 import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
-import startMicroApp from "@/microApp"
 // css
 import "normalize.css"
 import "element-plus/dist/index.css"
@@ -26,7 +25,5 @@ loadPlugins(app)
 loadSvg(app)
 /** 加载自定义指令 */
 loadDirectives(app)
-/** 启动微服务 */
-startMicroApp()
 
 app.use(store).use(router).mount("#app")
