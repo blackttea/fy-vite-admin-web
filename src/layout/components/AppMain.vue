@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed } from "vue"
-import { useRoute } from "vue-router"
+import {computed} from "vue"
+import {useRoute} from "vue-router"
 
 const route = useRoute()
 const key = computed(() => {
@@ -11,11 +11,9 @@ const key = computed(() => {
 <template>
   <section class="app-main">
     <router-view v-slot="{ Component }">
-      <transition name="fade-transform" mode="out-in">
-        <keep-alive>
-          <component :is="Component" :key="key" />
-        </keep-alive>
-      </transition>
+      <keep-alive>
+        <component :is="Component" :key="key"/>
+      </keep-alive>
     </router-view>
   </section>
 </template>
@@ -39,6 +37,7 @@ const key = computed(() => {
   .app-main {
     min-height: calc(100vh - var(--v3-header-height));
   }
+
   .fixed-header + .app-main {
     padding-top: var(--v3-header-height);
   }

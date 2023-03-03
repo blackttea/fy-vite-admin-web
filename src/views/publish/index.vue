@@ -1,6 +1,8 @@
+<script setup>
+</script>
+
 <template>
   <div class="app-container center">
-    <el-empty description="Editor 权限可见" />
   </div>
 </template>
 
@@ -8,7 +10,7 @@
 .center {
   height: 100%;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
 }
 </style>

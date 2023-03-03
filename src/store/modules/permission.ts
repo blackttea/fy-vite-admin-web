@@ -58,7 +58,7 @@ export const usePermissionStore = defineStore("permission", () => {
     })
 
     const reFormData = (data: any): void => {
-      if (!data["component"] || data["component"] === "../layout/index.vue") data["children"] = []
+      if (!data["component"] || data["component"] === "../layout/indexCopy.vue") data["children"] = []
       data["component"] = view[data["component"]] || data["component"]
       data["meta"] = {}
       const showList = ["hidden", "title", "svgIcon", "elIcon"]

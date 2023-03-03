@@ -107,15 +107,15 @@ const form = reactive<Menu>({
 })
 
 const rules: Record<string, Rule[]> = {
-  title: [{ required: true, message: "Please enter user name" }],
-  path: [{ required: true, message: "please enter url" }],
-  name: [{ required: true, message: "Please select an owner" }],
-  component: [{ required: true, message: "Please choose the type" }],
-  hidden: [{ required: true, message: "Please choose the approver" }],
-  redirect: [{ required: true, message: "Please choose the dateTime", type: "object" }],
-  svgIcon: [{ required: true, message: "Please enter url description" }],
-  seq: [{ required: true, message: "Please enter url description" }],
-  parentId: [{ required: true, message: "Please enter url description" }]
+  title: [{ required: true, message: "请输入菜单名称" }],
+  path: [{ required: true, message: "请输入菜单路径" }],
+  name: [{ required: true, message: "请输入路由名称" }],
+  component: [{ required: false, message: "请输入组件路径" }],
+  hidden: [{ required: true, message: "请选择是否隐藏" }],
+  redirect: [{ required: false, message: "请输入重定向路径"}],
+  svgIcon: [{ required: false, message: "请输入图标" }],
+  seq: [{ required: false, message: "请输入顺序" }],
+  parentId: [{ required: false, message: "情选择上级菜单" }]
 }
 const hiddenOption = [
   { label: "是", value: true },

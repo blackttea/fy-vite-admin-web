@@ -14,20 +14,20 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "/redirect/:path(.*)",
-        component: () => import("@/views/redirect/index.vue")
+        component: () => import("@/views/stable/redirect/index.vue")
       }
     ]
   },
   {
     path: "/403",
-    component: () => import("@/views/error-page/403.vue"),
+    component: () => import("@/views/stable/error-page/403.vue"),
     meta: {
       hidden: true
     }
   },
   {
     path: "/404",
-    component: () => import("@/views/error-page/404.vue"),
+    component: () => import("@/views/stable/error-page/404.vue"),
     meta: {
       hidden: true
     },
@@ -35,7 +35,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/login",
-    component: () => import("@/views/login/index.vue"),
+    component: () => import("@/views/stable/login/index.vue"),
     meta: {
       hidden: true
     }
@@ -43,7 +43,15 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     name: "register",
     path: "/register",
-    component: () => import("@/views/login/register.vue"),
+    component: () => import("@/views/stable/login/register.vue"),
+    meta: {
+      hidden: true
+    }
+  },
+  {
+    name: "article",
+    path: "/article",
+    component: () => import("@/views/article/index.vue"),
     meta: {
       hidden: true
     }
@@ -56,7 +64,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       // ...r,
       {
         path: "/system",
-        component: view["../views/system/index.vue"],
+        component: view["../views/stable/system/index.vue"],
         name: "system",
         meta: {
           title: "系统配置",
@@ -66,7 +74,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
       {
         path: "/menu",
-        component: view["../views/menu/index.vue"],
+        component: view["../views/stable/menu/index.vue"],
         name: "Menu",
         meta: {
           title: "多级菜单",

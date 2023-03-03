@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import pagePadding from "@/components/pagePadding/index.vue"
 import { reactive } from "vue"
-import { setting } from "../../type/system"
+import { setting } from "../../../type/system"
 import { useSettingsStore } from "@/store/modules/settings"
 import layoutSettings, { tagOption } from "@/config/layout"
 

@@ -51,7 +51,7 @@ div:focus {
 /* 滚动条宽高，横向滚动条的高，纵向滚动条的宽 */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10px;
+  height: 100px;
 }
 
 /* 滚动轨道 */
@@ -77,5 +77,10 @@ div:focus {
 
 .container-center {
   @include con;
+  align-items: center;
+}
+
+.no-wrap {
+  display: flex;
   align-items: center;
 }
