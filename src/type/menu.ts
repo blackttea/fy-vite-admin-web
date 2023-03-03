@@ -10,6 +10,7 @@ export declare interface Menu {
   elIcon?: string
   seq: number | undefined
   parentId: number | null | undefined
+  permission?: Array<string>
   children?: Array<object>
 }
 

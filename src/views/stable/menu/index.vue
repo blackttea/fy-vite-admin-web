@@ -7,6 +7,7 @@ import { SearchOutlined } from "@ant-design/icons-vue"
 import addMenu from "./addMenu/index.vue"
 import { deleteMenu, updateMenu } from "@/api/login"
 import { message } from "ant-design-vue"
+import listManage from "./listManage/index.vue"
 
 const column = [
   {
@@ -44,6 +45,10 @@ const column = [
   {
     title: "顺序",
     field: "seq"
+  },
+  {
+    title: "页面权限",
+    field: "permission"
   }
 ]
 const loading = ref(false)
@@ -54,6 +59,7 @@ const hiddenOption = [
   { label: "否", value: false }
 ]
 const visible = ref(false)
+const perVisible = ref(false)
 const icon = ref(undefined)
 const elIcon = reactive<iconList[]>([])
 
@@ -62,7 +68,14 @@ const editIcon = (row: Menu) => {
   console.log(row)
 }
 
-const handleOk = () => {}
+const editPermission = (row: Menu) => {
+  perVisible.value = true
+  console.log(row)
+}
+
+const handleOk = () => {
+  perVisible.value = false
+}
 
 const getIcon = () => {
   elIcon.length = 0
@@ -96,6 +109,10 @@ const upMenu = () => {
     }
   })
 }
+
+const d = reactive({
+  data: "[]"
+})
 </script>
 
 <template>
@@ -122,7 +139,7 @@ const upMenu = () => {
         size="mini"
         header-align="left"
         align="left"
-        style="height: 100%"
+        style="height: 50%"
         :loading="loading"
         border
       >
@@ -135,14 +152,18 @@ const upMenu = () => {
               <component v-else-if="row['elIcon']" :is="row['elIcon']" class="el-icon" />
             </div>
           </template>
-          <template #edit="{ row }" v-if="!['id'].includes(item.field)">
-            <vxe-select v-model="row[item.field]" v-if="item.field === 'hidden'" :options="hiddenOption" transfer />
-            <div v-else-if="item.field === 'svgIcon'">
-              <div class="icon-edit" @click="editIcon(row)">
-                <svg-icon v-if="row['svgIcon']" :name="row['svgIcon']" />
-                <component v-else-if="row['elIcon']" :is="row['elIcon']" class="el-icon" />
+          <template #default="{ row }" v-if="item.field === 'permission'">
+            <a-modal v-model:visible="perVisible" title="权限设置" @ok="handleOk" @cancel="perVisible = false">
+              <div>
+                <listManage v-if="perVisible" v-model:value="row[item.field]" />
               </div>
+            </a-modal>
+            <div class="icon-edit" @click="editPermission(row)">
+              {{ row[item.field] }}
             </div>
+          </template>
+          <template #edit="{ row }" v-if="!['id', 'svgIcon', 'permission'].includes(item.field)">
+            <vxe-select v-model="row[item.field]" v-if="item.field === 'hidden'" :options="hiddenOption" transfer />
             <a-input v-else v-model:value="row[item.field]" style="width: 100%" />
           </template>
         </vxe-column>
