@@ -41,6 +41,13 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-this-alias": [
+      "error",
+      {
+        allowDestructuring: false, // Disallow `const { props, state } = this`; true by default
+        allowedNames: ["vim"] // Allow `const self = this`; `[]` by default
+      }
+    ],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

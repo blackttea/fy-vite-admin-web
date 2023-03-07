@@ -1,5 +1,6 @@
 import { request } from "@/utils/service"
 import { Menu } from "@/type/menu"
+import { Param } from "@/type/api"
 
 export interface ILoginData {
   /** admin 或 editor */
@@ -22,7 +23,7 @@ export interface formType {
 /** 获取登录验证码 */
 export function getLoginCodeApi() {
   return request({
-    url: "api/user/code",
+    url: "/api/user/code",
     method: "post",
     responseType: "arraybuffer"
   })
@@ -30,7 +31,7 @@ export function getLoginCodeApi() {
 /** 登录并返回 Token */
 export function loginA(data: ILoginData) {
   return request({
-    url: "users/login",
+    url: "/users/login",
     method: "post",
     data
   })
@@ -38,7 +39,7 @@ export function loginA(data: ILoginData) {
 /** 获取用户详情 */
 export function getUserInfoApi() {
   return request({
-    url: "api/user/info",
+    url: "/api/user/info",
     method: "post"
   })
 }
@@ -46,7 +47,7 @@ export function getUserInfoApi() {
 /** 获取用户详情 */
 export function loginApi(data: ILoginData) {
   return request({
-    url: "api/user/login",
+    url: "/api/user/login",
     method: "post",
     data
   })
@@ -55,7 +56,7 @@ export function loginApi(data: ILoginData) {
 /** 获取用户详情 */
 export function register(data: formType) {
   return request({
-    url: "api/user/register",
+    url: "/api/user/register",
     method: "post",
     data
   })
@@ -64,7 +65,7 @@ export function register(data: formType) {
 /** 获取用户详情 */
 export function getMenuApi() {
   return request({
-    url: "api/menu/getMenu",
+    url: "/api/menu/getMenu",
     method: "post"
   })
 }
@@ -72,7 +73,7 @@ export function getMenuApi() {
 /** 获取用户详情 */
 export function addMenuApi(data: Menu[]) {
   return request({
-    url: "api/menu/addMenu",
+    url: "/api/menu/addMenu",
     method: "post",
     data
   })
@@ -81,7 +82,7 @@ export function addMenuApi(data: Menu[]) {
 /** 获取用户详情 */
 export function sendEmailCode(data: formType) {
   return request({
-    url: "api/user/sendEmailCode",
+    url: "/api/user/sendEmailCode",
     method: "post",
     data
   })
@@ -90,7 +91,7 @@ export function sendEmailCode(data: formType) {
 /** 获取用户详情 */
 export function deleteMenu(data: number[]) {
   return request({
-    url: "api/menu/delMenu",
+    url: "/api/menu/delMenu",
     method: "post",
     data
   })
@@ -99,7 +100,16 @@ export function deleteMenu(data: number[]) {
 /** 获取用户详情 */
 export function updateMenu(data: Menu[]) {
   return request({
-    url: "api/menu/updateMenu",
+    url: "/api/menu/updateMenu",
+    method: "post",
+    data
+  })
+}
+
+/** 获取用户详情 */
+export function getUserList(data: Param) {
+  return request({
+    url: "/api/user/getUser",
     method: "post",
     data
   })

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import pagePadding from "@/components/pagePadding/index.vue"
 import { usePermissionStore } from "@/store/modules/permission"
-import { reactive, ref } from "vue"
+import { reactive, ref, nextTick } from "vue"
 import { Menu, iconList } from "@/type/menu"
 import { SearchOutlined } from "@ant-design/icons-vue"
 import addMenu from "./addMenu/index.vue"
@@ -58,24 +58,15 @@ const hiddenOption = [
   { label: "是", value: true },
   { label: "否", value: false }
 ]
-const visible = ref(false)
+
 const perVisible = ref(false)
-const icon = ref(undefined)
+const data = reactive<any>({
+  permission: "[]",
+  gridData: [...permissionStore.menuList],
+  id: 0
+})
+
 const elIcon = reactive<iconList[]>([])
-
-const editIcon = (row: Menu) => {
-  visible.value = true
-  console.log(row)
-}
-
-const editPermission = (row: Menu) => {
-  perVisible.value = true
-  console.log(row)
-}
-
-const handleOk = () => {
-  perVisible.value = false
-}
 
 const getIcon = () => {
   elIcon.length = 0
@@ -91,34 +82,49 @@ const delMenu = () => {
     } else {
       message.error(res.message)
     }
+    search()
   })
 }
 
 const search = async () => {
   loading.value = true
   await permissionStore.getMenu()
+  data.gridData = [...permissionStore.menuList]
   loading.value = false
 }
 
 const upMenu = () => {
-  updateMenu(permissionStore.menuList).then((res: any) => {
+  updateMenu(data.gridData).then((res: any) => {
     if (res.code === 200) {
       message.info("更新成功!")
     } else {
       message.error(res.message)
     }
+    search()
   })
 }
 
-const d = reactive({
-  data: "[]"
-})
+const editPermission = (row: Menu) => {
+  data.permission = row["permission"]
+  const index: number = permissionStore.menuList.findIndex((pm) => {
+    return row.id === pm.id
+  })
+  data.id = index
+  perVisible.value = true
+}
+
+const permissionEdit = () => {
+  perVisible.value = false
+  nextTick(() => {
+    permissionStore.menuList[data.id].permission = data.permission
+  })
+}
 </script>
 
 <template>
   <page-padding>
     <div class="tool-bar">
-      <add-menu class="bar-btn" />
+      <add-menu class="bar-btn" @search="search" />
       <a-button type="primary" size="small" class="bar-btn" @click="upMenu">保存</a-button>
       <a-button type="primary" size="small" danger class="bar-btn" @click="delMenu">删除</a-button>
       <a-button type="primary" size="small" class="bar-btn" @click="search">
@@ -132,46 +138,41 @@ const d = reactive({
       <vxe-table
         ref="gridRef"
         :column-config="{ resizable: true }"
-        :data="permissionStore.menuList"
+        :data="data.gridData"
         :checkbox-config="{ labelField: 'name', highlight: true }"
         :tree-config="{ transform: true, rowField: 'id', parentField: 'parentId' }"
         :edit-config="{ trigger: 'click', mode: 'cell' }"
         size="mini"
         header-align="left"
         align="left"
-        style="height: 50%"
+        style="height: 100%"
         :loading="loading"
         border
       >
         <vxe-column type="checkbox" title="名称" tree-node />
         <vxe-column field="id" title="ID" />
         <vxe-column :field="item.field" :title="item.title" v-for="item in column" :key="item.field" :edit-render="{}">
-          <template #default="{ row }" v-if="item.field === 'svgIcon'">
-            <div class="icon-edit" @click="editIcon(row)">
+          <template #default="{ row }" v-if="['svgIcon', 'permission'].includes(item.field)">
+            <div class="icon-edit" v-if="item.field === 'svgIcon'">
               <svg-icon v-if="row['svgIcon']" :name="row['svgIcon']" />
               <component v-else-if="row['elIcon']" :is="row['elIcon']" class="el-icon" />
             </div>
-          </template>
-          <template #default="{ row }" v-if="item.field === 'permission'">
-            <a-modal v-model:visible="perVisible" title="权限设置" @ok="handleOk" @cancel="perVisible = false">
-              <div>
-                <listManage v-if="perVisible" v-model:value="row[item.field]" />
+            <div v-else>
+              <div @click="editPermission(row)">
+                {{row[item.field]}}
               </div>
-            </a-modal>
-            <div class="icon-edit" @click="editPermission(row)">
-              {{ row[item.field] }}
             </div>
           </template>
-          <template #edit="{ row }" v-if="!['id', 'svgIcon', 'permission'].includes(item.field)">
+          <template #edit="{ row }" v-if="!['id', 'permission'].includes(item.field)">
             <vxe-select v-model="row[item.field]" v-if="item.field === 'hidden'" :options="hiddenOption" transfer />
             <a-input v-else v-model:value="row[item.field]" style="width: 100%" />
           </template>
         </vxe-column>
       </vxe-table>
     </div>
-    <a-modal v-model:visible="visible" title="图标编辑" @ok="handleOk" @cancel="visible = false">
+    <a-modal v-model:visible="perVisible" title="图标编辑" @ok="permissionEdit" @cancel="perVisible = false">
       <div>
-        <a-textarea v-model:value="icon" placeholder="菜单图标" allow-clear />
+        <listManage v-if="perVisible" v-model:value="data.permission" />
       </div>
     </a-modal>
   </page-padding>

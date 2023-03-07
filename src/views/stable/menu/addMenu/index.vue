@@ -7,7 +7,7 @@
     <a-drawer
       title="新增菜单"
       :width="720"
-      :visible="visible"
+      v-model:visible="visible"
       :body-style="{ paddingBottom: '80px' }"
       :footer-style="{ textAlign: 'right' }"
       @close="onClose"
@@ -93,19 +93,22 @@ import type { Rule } from "ant-design-vue/es/form"
 import { Menu } from "@/type/menu"
 import { usePermissionStore } from "@/store/modules/permission"
 import { addMenuApi } from "@/api/login"
+import { message } from "ant-design-vue"
 
 const form = reactive<Menu>({
   title: "",
   path: "",
   name: "",
   component: "",
-  hidden: false,
+  hidden: "false",
   redirect: "",
   svgIcon: "",
   seq: undefined,
-  parentId: undefined
+  parentId: undefined,
+  permission: []
 })
 
+const emit = defineEmits(["search"])
 const rules: Record<string, Rule[]> = {
   title: [{ required: true, message: "请输入菜单名称" }],
   path: [{ required: true, message: "请输入菜单路径" }],
@@ -118,8 +121,8 @@ const rules: Record<string, Rule[]> = {
   parentId: [{ required: false, message: "情选择上级菜单" }]
 }
 const hiddenOption = [
-  { label: "是", value: true },
-  { label: "否", value: false }
+  { label: "是", value: "true" },
+  { label: "否", value: "false" }
 ]
 const visible = ref<boolean>(false)
 
@@ -132,9 +135,15 @@ const onClose = () => {
 }
 
 const onOk = () => {
-  addMenuApi([form]).then((res) => {
-    console.log(res)
-    debugger
+  form["hidden"] = form["hidden"] === "true"
+  addMenuApi([form]).then((res: any) => {
+    if (res.code === 200) {
+      message.info(res.message)
+    } else {
+      message.error(res.message)
+    }
+    visible.value = false
+    emit("search")
   })
 }
 </script>

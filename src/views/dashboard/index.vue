@@ -3,5 +3,7 @@
 </script>
 
 <template>
-  <div></div>
+  <div>
+    <a-button type="primary" v-permission="'test'">test</a-button>
+  </div>
 </template>

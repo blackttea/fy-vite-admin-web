@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {computed} from "vue"
-import {useRoute} from "vue-router"
+import { computed } from "vue"
+import { useRoute } from "vue-router"
 
 const route = useRoute()
 const key = computed(() => {
@@ -12,7 +12,7 @@ const key = computed(() => {
   <section class="app-main">
     <router-view v-slot="{ Component }">
       <keep-alive>
-        <component :is="Component" :key="key"/>
+        <component :is="Component" :key="key" />
       </keep-alive>
     </router-view>
   </section>

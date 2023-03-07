@@ -72,16 +72,6 @@ export const constantRoutes: RouteRecordRaw[] = [
           hidden: true
         }
       },
-      {
-        path: "/menu",
-        component: view["../views/stable/menu/index.vue"],
-        name: "Menu",
-        meta: {
-          title: "多级菜单",
-          svgIcon: "menu",
-          hidden: true
-        }
-      }
     ]
   }
 ]

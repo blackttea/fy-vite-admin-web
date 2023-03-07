@@ -29,24 +29,25 @@ const props = defineProps({
   }
 })
 
-const dataList = reactive<any>([...JSON.parse(props.value || "[]")])
+const dataList = reactive<string[]>([...(props.value || [])])
 
 const addData = () => {
   if (inputValue.value && !dataList.includes(inputValue.value)) {
     dataList.unshift(inputValue.value)
+    updatePermission()
   }
 }
 
 const removeData = (e: any) => {
   if (e.target.dataset.index) {
     dataList.splice(e.target.dataset.index, 1)
+    updatePermission()
   }
 }
 
-onUnmounted(() => {
-  debugger
+const updatePermission = () => {
   emit("update:value", JSON.stringify(dataList))
-})
+}
 </script>
 
 <style scoped lang="scss">
