@@ -2,17 +2,17 @@
 import pagePadding from "@/components/pagePadding/index.vue"
 // import { usePermissionStore } from "@/store/modules/permission"
 import { onMounted, reactive, ref } from "vue"
-import { Menu, Role } from "@/type/menu"
+import { Menu, User } from "@/type/menu"
 import { SearchOutlined } from "@ant-design/icons-vue"
 // import { message } from "ant-design-vue"
 import { VxeGridProps } from "vxe-table"
-import { getRoleList } from "@/api/login"
+import { getUserList } from "@/api/login"
 import { message } from "ant-design-vue"
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue"
-import addRole from "./addRole/index.vue"
+import addUser from "./addUser/index.vue"
 
 const formState = reactive({
-  name: ""
+  username: ""
 })
 const user = reactive({})
 const visible = ref(false)
@@ -20,9 +20,12 @@ const gridOuter = ref()
 const search = () => {
   const param = {
     currentPage: 1,
-    pageSize: 100
+    pageSize: 100,
+    data: {
+      username: formState.username
+    }
   }
-  getRoleList(param).then((res: any) => {
+  getUserList(param).then((res: any) => {
     console.log(res)
     if (res.code === 200) {
       gridOption.data = res.data
@@ -41,9 +44,13 @@ const gridOption = reactive<VxeGridProps>({
     resizable: true
   },
   columns: [
-    { field: "name", title: "名称" },
-    { field: "menu", title: "菜单权限", showOverflow: true },
-    { field: "page", title: "页面权限", showOverflow: true },
+    { field: "username", title: "用户名" },
+    { field: "password", title: "密码", showHeaderOverflow: true },
+    { field: "email", title: "邮箱", showOverflow: true },
+    { field: "phone", title: "手机", showOverflow: true },
+    { field: "img", title: "头像", showOverflow: true },
+    { field: "roles", title: "菜单权限", showOverflow: true },
+    { field: "permission", title: "页面权限", showOverflow: true },
     { field: "level", title: "用户等级", showOverflow: true },
     { title: "操作", slots: { default: "operate" } }
   ],
@@ -56,7 +63,7 @@ const delMenu = (row: Menu) => {
   console.log(row)
 }
 
-const editRole = (row: Role) => {
+const editRole = (row: User) => {
   Object.assign(user, row)
   visible.value = true
 }
@@ -92,7 +99,7 @@ onMounted(() => {
         </template>
       </vxe-grid>
     </div>
-    <add-role v-if="visible" :user="user" @close="close" />
+    <add-user v-if="visible" :user="user" @close="close" />
   </page-padding>
 </template>
 

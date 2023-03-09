@@ -13,7 +13,6 @@ export const permission: Directive = {
     const index = _pm.findIndex((pm) => {
       return pm.path === currentRoute
     })
-    debugger
     if (index >= 0) {
       if (_pm[index].permission && Array.isArray(_pm[index].permission) && _pm[index].permission.length > 0) {
         if (!_pm[index].permission.includes(value)) {

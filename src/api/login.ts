@@ -114,3 +114,21 @@ export function getUserList(data: Param) {
     data
   })
 }
+
+/** 获取用户详情 */
+export function getRoleList(data: Param) {
+  return request({
+    url: "/api/user/getRole",
+    method: "post",
+    data
+  })
+}
+
+/** 获取用户详情 */
+export function upRole(data: any) {
+  return request({
+    url: "/api/user/updateRole",
+    method: "post",
+    data
+  })
+}

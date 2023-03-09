@@ -20,13 +20,20 @@ export declare interface iconList {
   icon: any
 }
 
-export declare interface Role {
+export declare interface User {
   username: string
   password: string
   email: string
   phone: string
   img: string
-  roles: string
-  permission: string
-  level: number
+  roles: string | Array<any>
+  permission: string | Array<any>
+  level: number | undefined
+}
+
+export declare interface Role {
+  name: string
+  menu: string | Array<any>
+  page: any
+  level: number | undefined
 }
