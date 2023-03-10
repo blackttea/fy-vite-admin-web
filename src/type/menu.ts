@@ -4,6 +4,7 @@ export declare interface Menu {
   name: string
   component: string | null
   hidden: boolean | string
+  common: boolean | string
   redirect: string
   id?: number
   svgIcon?: string
@@ -26,14 +27,14 @@ export declare interface User {
   email: string
   phone: string
   img: string
-  roles: string | Array<any>
-  permission: string | Array<any>
+  menu: string | Array<any>
+  page: any
   level: number | undefined
 }
 
 export declare interface Role {
   name: string
-  menu: string | Array<any>
+  menu: Array<any>
   page: any
   level: number | undefined
 }

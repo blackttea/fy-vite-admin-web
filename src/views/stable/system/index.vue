@@ -59,8 +59,9 @@ const selectChange = (name: string) => {
             v-for="item in settingList"
             :key="item.name"
           >
-            <a-input v-if="item.tag === 'input'" v-model:value="settingsStore[item.name]" />
+            <a-input v-if="item.tag === 'input'" v-model:value="settingsStore[item.name]" size="small" />
             <a-radio-group
+              size="small"
               v-else-if="item.tag === 'radio'"
               v-model:value="settingsStore[item.name]"
               button-style="solid"
@@ -71,6 +72,7 @@ const selectChange = (name: string) => {
             <a-select
               @change="selectChange(item.name)"
               v-else
+              size="small"
               v-model:value="settingsStore[item.name]"
               :options="item.option"
             />

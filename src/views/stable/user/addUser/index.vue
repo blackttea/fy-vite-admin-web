@@ -35,15 +35,14 @@
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="用户等级" name="level">
-              <a-input v-model:value="form.level" style="width: 100%" />
+              <a-select v-model:value="form.level" :options="roleOption" @change="initPermission" style="width: 100%" />
             </a-form-item>
           </a-col>
-          <a-col :span="12"> </a-col>
+          <a-col :span="12" />
         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
-            <a-form-item label="头像" name="img">
-            </a-form-item>
+            <a-form-item label="头像" name="img" />
           </a-col>
         </a-row>
         <a-row :gutter="16">
@@ -56,22 +55,26 @@
                 </div>
                 <a-tree
                   v-model:expandedKeys="expandedKeys"
-                  v-model:checkedKeys="form.roles"
+                  v-model:checkedKeys="form.menu"
+                  v-model:selectedKeys="selectedKeys"
                   checkable
                   :tree-data="treeData"
-                >
-                  <template #title="{ title, key }">
-                    <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>
-                    <template v-else>{{ title }}</template>
-                  </template>
-                </a-tree>
+                />
               </div>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
-            <user-table v-model:vaue="form.permission" />
+            <a-form-item name="permission" label="页面权限">
+              <a-select
+                v-model:value="menuPermission[selectedKeys[0]]"
+                mode="multiple"
+                style="width: 100%"
+                option-label-prop="label"
+                :options="permissionStore.menuPer[selectedKeys[0]]"
+              />
+            </a-form-item>
           </a-col>
         </a-row>
       </a-form>
@@ -85,38 +88,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-// import { PlusOutlined } from "@ant-design/icons-vue"
 import { reactive, ref } from "vue"
 import type { Rule } from "ant-design-vue/es/form"
 import { User } from "@/type/menu"
 import { usePermissionStore } from "@/store/modules/permission"
-import userTable from "./userTable.vue"
+import {getRoleList, upUser} from "@/api/login"
+import { message } from "ant-design-vue"
 
-const form = reactive<User>({
-  username: "",
-  password: "",
-  email: "",
-  phone: "",
-  img: "",
-  roles: [],
-  permission: [],
-  level: 0
-})
-const props = defineProps({
-  user: Object
-})
-
-const getInitData = () => {
-  form.permission = JSON.parse(props.user?.permission || "[]")
-  form.roles = JSON.parse(props.user?.roles || "[]")
-}
-const permissionStore = usePermissionStore()
-const expandedKeys = ref<string[]>([])
-const treeData = reactive([...permissionStore.parentList])
-const checkAll = ref(false)
-
-const selectAll = () => {}
-const emit = defineEmits(["close"])
 const rules: Record<string, Rule[]> = {
   username: [{ required: true, message: "请输入用户" }],
   password: [{ required: true, message: "请输入密码" }],
@@ -128,6 +106,60 @@ const rules: Record<string, Rule[]> = {
   level: [{ required: false, message: "请选择用户级别" }]
 }
 
+const props = defineProps({
+  user: Object
+})
+
+const form = reactive<User>({
+  username: props.user?.username || "",
+  password: props.user?.password || "",
+  email: props.user?.email || "",
+  phone: props.user?.phone || "",
+  img: props.user?.img || "",
+  menu: props.user?.menu || [],
+  page: props.user?.page || {},
+  level: props.user?.level
+})
+
+const initPermission = () => {
+  form.menu = role[form.level ?? 0]?.menu
+  form.page = role[form.level ?? 0]?.page
+  for (const key in menuPermission) delete menuPermission[key]
+  Object.assign(menuPermission, form.page)
+}
+const selectedKeys = ref<string[]>([])
+const menuPermission = reactive<any>({ ...form.page })
+const permissionStore = usePermissionStore()
+const expandedKeys = ref<string[]>([])
+const treeData = reactive([...permissionStore.parentList])
+const checkAll = ref(false)
+const roleOption = reactive<Array<any>>([])
+const role = reactive<any>([])
+const selectAll = () => {}
+const emit = defineEmits(["close"])
+
+const getRole = () => {
+  const param = {
+    currentPage: 1,
+    pageSize: 100
+  }
+  roleOption.length = 0
+  getRoleList(param).then((res: any) => {
+    console.log(res)
+    if (res.code === 200) {
+      for (const item of res.data || []) {
+        roleOption.push({ label: item.name, value: item.level })
+        role[item.level] = item
+      }
+    } else {
+      message.info(res.message)
+    }
+  })
+}
+if (!props?.user?.username) {
+  initPermission()
+}
+getRole()
 const visible = ref<boolean>(true)
 
 const onClose = () => {
@@ -135,11 +167,22 @@ const onClose = () => {
 }
 
 const onOk = () => {
-  console.log(form)
+  const user = { id: props.user?.id, ...form }
+  user.page = {}
+  for (const m of form.menu) {
+    if (menuPermission[m]) user.page[m] = menuPermission[m]
+    else {
+      const tem = []
+      for (const key of permissionStore.menuPer[m]) tem.push(key.value)
+      user.page[m] = tem
+    }
+  }
+  upUser([user]).then((res: any) => {
+    console.log(res)
+    debugger
+  })
   emit("close")
 }
-
-getInitData()
 </script>
 
 <style lang="scss" scoped>

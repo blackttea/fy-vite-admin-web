@@ -71,6 +71,13 @@
         </a-row>
         <a-row :gutter="16">
           <a-col :span="24">
+            <a-form-item label="公共组件" name="common">
+              <a-select v-model:value="form.common" :options="hiddenOption" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="24">
             <a-form-item label="菜单图标" name="svgIcon">
               <a-textarea v-model:value="form.svgIcon" :rows="4" />
             </a-form-item>
@@ -105,7 +112,8 @@ const form = reactive<Menu>({
   svgIcon: "",
   seq: undefined,
   parentId: undefined,
-  permission: []
+  permission: [],
+  common: "false"
 })
 
 const emit = defineEmits(["search"])
@@ -135,8 +143,10 @@ const onClose = () => {
 }
 
 const onOk = () => {
-  form["hidden"] = form["hidden"] === "true"
-  addMenuApi([form]).then((res: any) => {
+  const param = { ...form }
+  param["hidden"] = form["hidden"] === "true"
+  param["common"] = form["common"] === "true"
+  addMenuApi([param]).then((res: any) => {
     if (res.code === 200) {
       message.info(res.message)
     } else {

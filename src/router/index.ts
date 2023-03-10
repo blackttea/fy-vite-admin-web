@@ -61,7 +61,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     component: Layout,
     name: "index",
     children: [
-      // ...r,
       {
         path: "/system",
         component: view["../views/stable/system/index.vue"],
@@ -71,7 +70,7 @@ export const constantRoutes: RouteRecordRaw[] = [
           svgIcon: "menu",
           hidden: true
         }
-      },
+      }
     ]
   }
 ]
@@ -81,7 +80,6 @@ export const constantRoutes: RouteRecordRaw[] = [
  * 用来放置有权限 (Roles 属性) 的路由
  * 必须带有 Name 属性
  */
-export const asyncRoutes: RouteRecordRaw[] = []
 
 const router = createRouter({
   history:

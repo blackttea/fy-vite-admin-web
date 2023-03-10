@@ -132,3 +132,12 @@ export function upRole(data: any) {
     data
   })
 }
+
+/** 获取用户详情 */
+export function upUser(data: any) {
+  return request({
+    url: "/api/user/updateUser",
+    method: "post",
+    data
+  })
+}

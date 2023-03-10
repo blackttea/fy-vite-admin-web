@@ -43,7 +43,7 @@ const gridOption = reactive<VxeGridProps>({
   columns: [
     { field: "name", title: "名称" },
     { field: "menu", title: "菜单权限", showOverflow: true },
-    { field: "page", title: "页面权限", showOverflow: true },
+    { field: "page", title: "页面权限", showOverflow: true, slots: { default: "page" } },
     { field: "level", title: "用户等级", showOverflow: true },
     { title: "操作", slots: { default: "operate" } }
   ],
@@ -86,6 +86,9 @@ onMounted(() => {
     </div>
     <div class="menu-table" ref="gridOuter">
       <vxe-grid v-bind="gridOption">
+        <template #page="{ row }">
+          {{ JSON.stringify(row["page"]) }}
+        </template>
         <template #operate="{ row }">
           <edit-outlined class="edit-btn" @click="editRole(row)" />
           <delete-outlined class="edit-btn" />

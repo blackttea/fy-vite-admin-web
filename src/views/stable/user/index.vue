@@ -49,8 +49,8 @@ const gridOption = reactive<VxeGridProps>({
     { field: "email", title: "邮箱", showOverflow: true },
     { field: "phone", title: "手机", showOverflow: true },
     { field: "img", title: "头像", showOverflow: true },
-    { field: "roles", title: "菜单权限", showOverflow: true },
-    { field: "permission", title: "页面权限", showOverflow: true },
+    { field: "menu", title: "菜单权限", showOverflow: true },
+    { field: "page", title: "页面权限", showOverflow: true, slots: { default: "page" } },
     { field: "level", title: "用户等级", showOverflow: true },
     { title: "操作", slots: { default: "operate" } }
   ],
@@ -93,6 +93,9 @@ onMounted(() => {
     </div>
     <div class="menu-table" ref="gridOuter">
       <vxe-grid v-bind="gridOption">
+        <template #page="{ row }">
+          <div>{{ JSON.stringify(row["page"]) }}</div>
+        </template>
         <template #operate="{ row }">
           <edit-outlined class="edit-btn" @click="editRole(row)" />
           <delete-outlined class="edit-btn" />

@@ -70,24 +70,20 @@ import { Role } from "@/type/menu"
 import { usePermissionStore } from "@/store/modules/permission"
 import { upRole } from "@/api/login"
 
-const form = reactive<Role>({
-  name: "",
-  menu: [],
-  page: "",
-  level: undefined
-})
 const props = defineProps({
   user: Object
 })
+const form = reactive<Role>({
+  name: props.user?.name || "",
+  menu: props.user?.menu || [],
+  page: props.user?.page || {},
+  level: props.user?.level ?? undefined
+})
 
-const getInitData = () => {
-  form.menu = JSON.parse(props.user?.menu || "[]")
-  form.page = JSON.parse(props.user?.page || "[]")
-}
 const permissionStore = usePermissionStore()
 const expandedKeys = ref<string[]>([])
 const selectedKeys = ref<string[]>([])
-const menuPermission = reactive<any>({})
+const menuPermission = reactive<any>({ ...form.page })
 const treeData = reactive([...permissionStore.parentList])
 const checkAll = ref(false)
 
@@ -108,15 +104,18 @@ const onOk = () => {
   const user = { id: props.user?.id, ...form }
   user.page = {}
   for (const m of form.menu) {
-    user.page[m] = menuPermission[m] || permissionStore.menuPer[m]
+    if (menuPermission[m]) user.page[m] = menuPermission[m]
+    else {
+      const tem = []
+      for (const key of permissionStore.menuPer[m]) tem.push(key.value)
+      user.page[m] = tem
+    }
   }
   upRole([user]).then((res) => {
     console.log(res)
   })
   emit("close")
 }
-
-getInitData()
 </script>
 
 <style lang="scss" scoped>
