@@ -127,7 +127,9 @@ function createRequestFunction(service: AxiosInstance) {
       baseURL: import.meta.env.VITE_BASE_API,
       data: {}
     }
-    return service(Object.assign(configDefault, config))
+    const configOuter = Object.assign(configDefault, config)
+    if (getToken()) configOuter.headers.Authorization = "token " + getToken()
+    return service(configOuter)
   }
 }
 

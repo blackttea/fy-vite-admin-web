@@ -141,3 +141,15 @@ export function upUser(data: any) {
     data
   })
 }
+
+/** 获取用户详情 */
+export function upFile(data: any) {
+  return request({
+    url: "/api/user/uploadFile",
+    method: "post",
+    headers: {
+      "content-type": "multipart/form-data"
+    },
+    data
+  })
+}

@@ -4,7 +4,6 @@ import { useRouter } from "vue-router"
 import { useAppStore } from "@/store/modules/app"
 import { useSettingsStore } from "@/store/modules/settings"
 import { useUserStore } from "@/store/modules/user"
-import { UserFilled } from "@element-plus/icons-vue"
 import Breadcrumb from "../Breadcrumb/index.vue"
 import Hamburger from "../Hamburger/index.vue"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
@@ -40,6 +39,16 @@ const logout = () => {
 const systemSet = () => {
   router.push("/system")
 }
+
+const encode = (str: string) => {
+  const encode = encodeURI(str)
+  const base64 = btoa(encode)
+  return base64
+}
+
+const iconUrl = computed(() => {
+  return encode(userStore.userInfo.img)
+})
 </script>
 
 <template>
@@ -52,7 +61,7 @@ const systemSet = () => {
       <Notify v-if="showNotify" class="right-menu-item" />
       <el-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
-          <el-avatar :icon="UserFilled" :size="30" />
+          <img :src="iconUrl" :size="30" />
           <span>{{ userStore.username }}</span>
         </div>
         <template #dropdown>
