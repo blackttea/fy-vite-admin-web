@@ -42,8 +42,7 @@ const systemSet = () => {
 
 const encode = (str: string) => {
   const encode = encodeURI(str)
-  const base64 = btoa(encode)
-  return base64
+  return encode
 }
 
 const iconUrl = computed(() => {
@@ -61,7 +60,7 @@ const iconUrl = computed(() => {
       <Notify v-if="showNotify" class="right-menu-item" />
       <el-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
-          <img :src="iconUrl" :size="30" />
+          <img :src="iconUrl" class="icon-head" />
           <span>{{ userStore.username }}</span>
         </div>
         <template #dropdown>
@@ -115,6 +114,12 @@ const iconUrl = computed(() => {
         }
         span {
           font-size: 16px;
+        }
+        .icon-head {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          margin-right: 10px;
         }
       }
     }
