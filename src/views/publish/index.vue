@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
+import bkMdEditor from "@/components/bkMdEditor/index.vue"
 </script>
 
 <template>
   <div class="app-container center">
+    <bkMdEditor />
   </div>
 </template>
 

@@ -92,7 +92,7 @@ import { reactive, ref } from "vue"
 import type { Rule } from "ant-design-vue/es/form"
 import { User } from "@/type/menu"
 import { usePermissionStore } from "@/store/modules/permission"
-import {getRoleList, upUser} from "@/api/login"
+import { getRoleList, upUser } from "@/api/login"
 import { message } from "ant-design-vue"
 
 const rules: Record<string, Rule[]> = {
@@ -179,7 +179,6 @@ const onOk = () => {
   }
   upUser([user]).then((res: any) => {
     console.log(res)
-    debugger
   })
   emit("close")
 }

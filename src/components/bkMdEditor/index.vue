@@ -134,7 +134,7 @@ const options = reactive([])
 
 const labelOptions = reactive(labelOption)
 const handleChange = () => {
-  console.log(formState)
+  console.log(formState, code)
 }
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo)

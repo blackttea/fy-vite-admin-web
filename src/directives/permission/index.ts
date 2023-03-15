@@ -14,10 +14,9 @@ export const permission: Directive = {
       return pm.path === currentRoute
     })
     if (index >= 0) {
-      if (_pm[index].permission && Array.isArray(_pm[index].permission) && _pm[index].permission.length > 0) {
-        if (!_pm[index].permission.includes(value)) {
-          el.style.display = "none"
-        }
+      const page = userStore.userInfo.page[<number>_pm[index].id] || []
+      if (!page.includes(value)) {
+        el.style.display = "none"
       }
     }
   }
