@@ -59,6 +59,7 @@ $bg: #ffffff;
     .component-show {
       width: 100%;
       height: 90%;
+      padding: 8px;
       display: flex;
       align-content: flex-start;
       flex-wrap: wrap;

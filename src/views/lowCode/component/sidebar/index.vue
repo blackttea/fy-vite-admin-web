@@ -27,7 +27,6 @@ const drag = (e: any, id: number) => {
 .left-bar {
   width: 100%;
   height: 100%;
-  background: #d9e9ff;
   display: flex;
   flex-wrap: wrap;
   .component-item {
