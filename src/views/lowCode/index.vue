@@ -5,7 +5,9 @@
         <sidebar />
       </div>
       <div class="component-main">
-        <div class="component-setting" />
+        <div class="component-setting">
+          <a-button @click="test">test</a-button>
+        </div>
         <div class="component-show" @drop="addComponent" @dragover="(e) => e.preventDefault()">
           <low />
         </div>
@@ -26,6 +28,10 @@ const lowSetting = useLowSetting()
 const addComponent = (e: any) => {
   const id: number = parseInt(e.dataTransfer.getData("id") || "0")
   lowCode.dom.push(lowSetting.sideBar[id])
+}
+
+const test = () => {
+  lowCode.data["value"] += "1"
 }
 </script>
 <style lang="scss" scoped>

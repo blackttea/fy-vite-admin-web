@@ -19,7 +19,8 @@ export const useLowSetting = defineStore("lowSetting", () => {
             height: "90px"
           }
         },
-        children: "text"
+        children: "text",
+        setting: {}
       },
       {
         id: 1,
@@ -31,7 +32,8 @@ export const useLowSetting = defineStore("lowSetting", () => {
           },
           type: "primary"
         },
-        children: "text"
+        children: "text",
+        setting: {}
       },
       {
         id: 2,
@@ -39,11 +41,11 @@ export const useLowSetting = defineStore("lowSetting", () => {
         icon: MenuOutlined,
         props: {
           style: {
-            width: "150px",
-            height: "20px"
+            width: "150px"
           }
         },
-        children: null
+        children: null,
+        setting: {}
       }
     ]
     for (const item of testList) sideBar.value.push(item)

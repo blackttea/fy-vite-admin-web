@@ -4,6 +4,7 @@ import { ref } from "vue"
 
 export const useLowCodeStore = defineStore("lowCode", () => {
   const dom = ref<any[]>([])
+  const data = ref<any>({})
   const style = {
     width: "100%",
     height: "100%"
@@ -40,7 +41,8 @@ export const useLowCodeStore = defineStore("lowCode", () => {
   // }, 3000)
   return {
     style,
-    dom
+    dom,
+    data
   }
 })
 
