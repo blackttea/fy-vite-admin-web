@@ -1,13 +1,13 @@
 <template>
   <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" @finish="onFinish">
     <a-space
-      v-for="(data, index) in dynamicValidateForm.dataList"
+      v-for="(data, index) in dynamicValidateForm.data"
       :key="data.id"
       style="display: flex; margin-bottom: 8px"
       align="baseline"
     >
       <a-form-item
-        :name="['dataList', index, 'type']"
+        :name="['data', index, 'type']"
         label="类型"
         :rules="{
           required: true,
@@ -18,7 +18,7 @@
       </a-form-item>
       <a-form-item
         label="名称"
-        :name="['dataList', index, 'name']"
+        :name="['data', index, 'name']"
         :rules="{
           required: true,
           message: 'Missing name'
@@ -26,7 +26,7 @@
       >
         <a-input v-model:value="data.name" />
       </a-form-item>
-      <a-form-item label="值" :name="['dataList', index, 'value']">
+      <a-form-item label="值" :name="['data', index, 'value']">
         <a-input v-model:value="data.value" />
       </a-form-item>
       <MinusCircleOutlined @click="removeData(data)" />
@@ -43,6 +43,7 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue"
 import { reactive, ref } from "vue"
 import type { FormInstance } from "ant-design-vue"
+import { useLowCodeStore } from "@/store/modules/lowCode"
 
 interface Data {
   type: "normal" | "model"
@@ -50,7 +51,8 @@ interface Data {
   value: any
   id: number
 }
-
+const lowCodeStore = useLowCodeStore()
+const props = defineProps(["setting"])
 const typeOption = [
   {
     label: "普通",
@@ -62,23 +64,23 @@ const typeOption = [
   }
 ]
 const formRef = ref<FormInstance>()
-const dynamicValidateForm = reactive<{ dataList: Data[] }>({
-  dataList: []
+const dynamicValidateForm = reactive<{ data: Data[] }>({
+  data: []
 })
 
 const removeData = (item: Data) => {
-  const index = dynamicValidateForm.dataList.indexOf(item)
+  const index = dynamicValidateForm.data.indexOf(item)
   if (index !== -1) {
-    dynamicValidateForm.dataList.splice(index, 1)
+    dynamicValidateForm.data.splice(index, 1)
   }
 }
 const getMax = (): number => {
   let max = 0
-  for (const item of dynamicValidateForm.dataList) if (max < item.id) max = item.id
+  for (const item of dynamicValidateForm.data) if (max < item.id) max = item.id
   return max
 }
 const addData = () => {
-  dynamicValidateForm.dataList.push({
+  dynamicValidateForm.data.push({
     type: "normal",
     name: "",
     value: "",
@@ -86,9 +88,19 @@ const addData = () => {
   })
 }
 const onFinish = (values: any) => {
-  console.log("Received values of form:", values)
-  console.log("dynamicValidateForm:", dynamicValidateForm)
+  console.log(values)
+  console.log(props.setting)
+
+  const index = lowCodeStore.dom.findIndex((d) => {
+    return d.id === props.setting.id
+  })
+
+  lowCodeStore.dom[index].setting["data"] = dynamicValidateForm.data
 }
+
+defineExpose({
+  onFinish
+})
 </script>
 <style lang="scss" scoped>
 .add-data-btn {

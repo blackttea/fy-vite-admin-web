@@ -54,6 +54,7 @@ $bg: #ffffff;
     .component-setting {
       width: 100%;
       height: 10%;
+      padding: 8px;
       border-bottom: 1px solid #f3f3f3;
     }
     .component-show {
