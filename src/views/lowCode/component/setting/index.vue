@@ -1,12 +1,19 @@
 <template>
   <div class="setting-container" :style="setting.props.style" @contextmenu.prevent="visible = true" ref="modal">
     <slot />
-    <a-modal v-model:visible="visible" title="测试" @ok="handleOk" width="60%" :getContainer="() => $refs.modal">
+    <a-modal
+      v-model:visible="visible"
+      title="测试"
+      @ok="handleOk"
+      width="60%"
+      :getContainer="() => $refs.modal"
+      :maskClosable="false"
+    >
       <div class="component-setting">
         <a-tabs v-model:activeKey="activeKey" style="height: 100%" tab-position="left" animated size="small">
-          <a-tab-pane :tab="item.title" v-for="item in tabList" :key="item.key">
+          <a-tab-pane :tab="item.title" v-for="(item, i) in tabList" :key="item.key">
             <div class="tab-content">
-              <component :is="item.component" />
+              <component :is="item.component" :ref="(e) => getRef(e, i)" :setting="setting" />
             </div>
           </a-tab-pane>
         </a-tabs>
@@ -17,41 +24,50 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import { useLowCodeStore } from "@/store/modules/lowCode"
+// import { useLowCodeStore } from "@/store/modules/lowCode"
 import addData from "../addData/index.vue"
-const lowCodeStore = useLowCodeStore()
+// const lowCodeStore = useLowCodeStore()
 const props = defineProps(["setting"])
+console.log(props)
 const visible = ref(false)
-const name = ref("")
-const activeKey = ref("1")
+// const name = ref("")
+const activeKey = ref("0")
+const refList = ref<any[]>([])
 
 const tabList = [
-  { key: "1", title: "数据(props)", component: addData },
-  { key: "2", title: "事件(event)", component: "div" },
-  { key: "3", title: "样式(css)", component: "div" },
-  { key: "4", title: "插槽(slot)", component: "div" },
-  { key: "5", title: "其他", component: "div" }
+  { key: "0", title: "数据(props)", component: addData, data: "" },
+  { key: "1", title: "事件(event)", component: "div", data: "" },
+  { key: "2", title: "样式(css)", component: "div", data: "" },
+  { key: "3", title: "插槽(slot)", component: "div", data: "" },
+  { key: "4", title: "其他(loop)", component: "div", data: "" },
+  { key: "5", title: "预览", component: "div", data: "" }
 ]
 
-const handleOk = () => {
-  visible.value = false
-  const index = lowCodeStore.dom.findIndex((d) => {
-    return d.id === props.setting.id
-  })
-  lowCodeStore.dom[index].props["onUpdate:value"] = (value: any) => {
-    lowCodeStore.data[name.value] = value
-  }
-  lowCodeStore.dom[index].setting["value"] = name.value
+const getRef = (e: any, i: number) => {
+  if (e) refList.value[i] = e
+}
 
-  if (!lowCodeStore.data[name.value]) lowCodeStore.data[name.value] = "test"
+const handleOk = () => {
+  console.log(refList.value)
+  if (refList.value[0].onFinish) refList.value[0].onFinish()
+  visible.value = false
+  // const index = lowCodeStore.dom.findIndex((d) => {
+  //   return d.id === props.setting.id
+  // })
+  // lowCodeStore.dom[index].props["onUpdate:value"] = (value: any) => {
+  //   lowCodeStore.data[name.value] = value
+  // }
+  // lowCodeStore.dom[index].setting["value"] = name.value
+  //
+  // if (!lowCodeStore.data[name.value]) lowCodeStore.data[name.value] = "test"
 }
 </script>
 
 <style scoped lang="scss">
 .setting-container {
   clear: both;
-  border: 1px solid #c69026;
   display: inline-block;
+  margin: 0 8px 8px 8px;
 }
 .component-setting {
   width: 100%;
