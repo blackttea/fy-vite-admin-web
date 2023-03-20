@@ -29,6 +29,8 @@ const drag = (e: any, id: number) => {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
+  background: #f2f2f2;
   .component-item {
     width: calc(33.33% - 10px);
     height: 30px;
@@ -37,7 +39,7 @@ const drag = (e: any, id: number) => {
     justify-content: center;
     align-items: center;
     background: #ffffff;
-    border-radius: 3px;
+    border-radius: 1px;
   }
 }
 </style>

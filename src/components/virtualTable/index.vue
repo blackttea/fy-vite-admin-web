@@ -93,7 +93,9 @@ watch(
   () => props.data,
   () => {
     getChildHeight()
-}, { deep: true })
+  },
+  { deep: true }
+)
 
 onMounted(() => {
   getChildHeight()
@@ -143,13 +145,13 @@ onMounted(() => {
 
 /* 滚动条宽高，横向滚动条的高，纵向滚动条的宽 */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
   height: 100px;
 }
 
 /* 滚动轨道 */
 ::-webkit-scrollbar-track {
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 /* 滚动条 */

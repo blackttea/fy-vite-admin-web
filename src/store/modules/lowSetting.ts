@@ -46,6 +46,21 @@ export const useLowSetting = defineStore("lowSetting", () => {
         },
         children: null,
         setting: {}
+      },
+      {
+        id: 3,
+        type: "test",
+        icon: MenuOutlined,
+        props: {
+          style: {
+            width: "150px"
+          },
+          onTest: () => {
+            debugger
+          }
+        },
+        children: null,
+        setting: {}
       }
     ]
     for (const item of testList) sideBar.value.push(item)

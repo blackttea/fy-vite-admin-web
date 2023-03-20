@@ -1,40 +1,35 @@
 <template>
   <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" @finish="onFinish">
-    <a-space
-      v-for="(data, index) in dynamicValidateForm.data"
-      :key="data.id"
-      style="display: flex; margin-bottom: 8px"
-      align="baseline"
-    >
+    <a-space v-for="(event, index) in dynamicValidateForm.event" :key="event.id" class="event-form" align="baseline">
       <a-form-item
-        :name="['data', index, 'type']"
+        :name="['event', index, 'type']"
         label="类型"
         :rules="{
           required: true,
           message: 'Missing type'
         }"
       >
-        <a-select v-model:value="data.type" @change="typeChange(index)" :options="typeOption" style="width: 130px" />
+        <a-select v-model:value="event.type" @change="typeChange(index)" :options="typeOption" style="width: 130px" />
       </a-form-item>
       <a-form-item
         label="名称"
-        :name="['data', index, 'name']"
+        :name="['event', index, 'name']"
         :rules="{
           required: true,
           message: 'Missing name'
         }"
       >
-        <a-input v-model:value="data.name" :disabled="data.type === 'children'" />
+        <a-input v-model:value="event.name" :disabled="eventEn.includes(event.type)" />
       </a-form-item>
-      <a-form-item label="值" :name="['data', index, 'value']">
-        <a-input v-model:value="data.value" />
+      <a-form-item label="值" :name="['event', index, 'value']">
+        <a-select v-model:value="event.function" :options="typeOption" style="width: 130px" />
       </a-form-item>
-      <MinusCircleOutlined @click="removeData(data)" />
+      <MinusCircleOutlined @click="removeData(event)" />
     </a-space>
     <a-form-item>
       <a-button type="dashed" block @click="addData" class="add-data-btn">
         <PlusOutlined />
-        添加数据
+        添加事件
       </a-button>
     </a-form-item>
   </a-form>
@@ -46,55 +41,54 @@ import type { FormInstance } from "ant-design-vue"
 import { useLowCodeStore } from "@/store/modules/lowCode"
 
 interface Data {
-  type: "normal" | "model" | "children"
+  type: string
   name: string
-  value: any
+  function: any
   id: number
 }
 const lowCodeStore = useLowCodeStore()
 const props = defineProps(["setting"])
-const typeOption = [
-  {
-    label: "普通",
-    value: "normal"
-  },
-  {
-    label: "双向绑定数据",
-    value: "model"
-  },
-  {
-    label: "动态展示数据",
-    value: "children"
+
+const eventEn = ["onClick", "onMouseover", "onMouseout", "onFocus", "onBlur", "onMousemove", "onMouseup", "onMousedown"]
+const eventCn = ["鼠标点击", "鼠标经过", "鼠标离开", "获得鼠标焦点", "失去鼠标焦点", "鼠标移动", "鼠标弹起", "鼠标按下"]
+const typeOption = reactive<{ label: string; value: string }[]>([])
+
+const initOption = () => {
+  for (const n in eventEn) {
+    typeOption.push({ label: eventCn[n], value: eventEn[n] })
   }
-]
+  typeOption.push({ label: "其他", value: "other" })
+}
+initOption()
 const formRef = ref<FormInstance>()
-const dynamicValidateForm = reactive<{ data: Data[] }>({
-  data: props?.setting?.data || []
+const dynamicValidateForm = reactive<{ event: Data[] }>({
+  event: props?.setting?.event || []
 })
 
 const removeData = (item: Data) => {
-  const index = dynamicValidateForm.data.indexOf(item)
+  const index = dynamicValidateForm.event.indexOf(item)
   if (index !== -1) {
-    dynamicValidateForm.data.splice(index, 1)
+    dynamicValidateForm.event.splice(index, 1)
   }
 }
 const getMax = (): number => {
   let max = 0
-  for (const item of dynamicValidateForm.data) if (max < item.id) max = item.id
+  for (const item of dynamicValidateForm.event) if (max < item.id) max = item.id
   return max
 }
 const addData = () => {
-  dynamicValidateForm.data.push({
-    type: "normal",
+  dynamicValidateForm.event.push({
+    type: "",
     name: "",
-    value: "",
+    function: "",
     id: getMax()
   })
 }
 
 const typeChange = (index: number) => {
-  if (dynamicValidateForm.data[index].type === "children") dynamicValidateForm.data[index].name = "children"
-  else dynamicValidateForm.data[index].name = ""
+  if (eventEn.includes(dynamicValidateForm.event[index].type))
+    dynamicValidateForm.event[index].name = dynamicValidateForm.event[index].type
+  else dynamicValidateForm.event[index].name = ""
 }
 
 const onFinish = (values: any) => {
@@ -105,7 +99,7 @@ const onFinish = (values: any) => {
     return d.id === props.setting.id
   })
 
-  for (const item of dynamicValidateForm.data) {
+  for (const item of dynamicValidateForm.event) {
     const data_name = `${item.name}_${lowCodeStore.dom[index].id}`
     if (item.type === "model") {
       lowCodeStore.dom[index].props[`onUpdate:${item.name}`] = (value: any) => {
@@ -114,7 +108,7 @@ const onFinish = (values: any) => {
     }
     if (!lowCodeStore.data[data_name]) lowCodeStore.data[data_name] = item.value
   }
-  lowCodeStore.dom[index].setting["data"] = dynamicValidateForm.data
+  lowCodeStore.dom[index].setting["data"] = dynamicValidateForm.event
   // lowCodeStore.dom[index].setting["data"] = dynamicValidateForm.data
 }
 
@@ -125,5 +119,9 @@ defineExpose({
 <style lang="scss" scoped>
 .add-data-btn {
   width: 120px;
+}
+.event-form {
+  display: flex;
+  margin-bottom: 8px;
 }
 </style>

@@ -24,19 +24,18 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-// import { useLowCodeStore } from "@/store/modules/lowCode"
 import addData from "../addData/index.vue"
-// const lowCodeStore = useLowCodeStore()
+import addEvent from "../addEvent/index.vue"
 const props = defineProps(["setting"])
 console.log(props)
+
 const visible = ref(false)
-// const name = ref("")
 const activeKey = ref("0")
 const refList = ref<any[]>([])
 
 const tabList = [
   { key: "0", title: "数据(props)", component: addData, data: "" },
-  { key: "1", title: "事件(event)", component: "div", data: "" },
+  { key: "1", title: "事件(event)", component: addEvent, data: "" },
   { key: "2", title: "样式(css)", component: "div", data: "" },
   { key: "3", title: "插槽(slot)", component: "div", data: "" },
   { key: "4", title: "其他(loop)", component: "div", data: "" },
@@ -67,7 +66,7 @@ const handleOk = () => {
 .setting-container {
   clear: both;
   display: inline-block;
-  margin: 0 8px 8px 8px;
+  margin: 8px 8px 0 8px;
 }
 .component-setting {
   width: 100%;

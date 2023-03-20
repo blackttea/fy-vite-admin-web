@@ -9,7 +9,7 @@
           <a-button @click="test">test</a-button>
         </div>
         <div class="component-show" @drop="addComponent" @dragover="(e) => e.preventDefault()">
-          <low />
+          <low class="show-main" />
         </div>
       </div>
     </div>
@@ -21,17 +21,21 @@ import low from "./low.vue"
 import sidebar from "./component/sidebar/index.vue"
 import { useLowCodeStore } from "@/store/modules/lowCode"
 import { useLowSetting } from "@/store/modules/lowSetting"
+import useDeepClone from "@/hooks/useDeepClone"
 
 const lowCode = useLowCodeStore()
 const lowSetting = useLowSetting()
 
 const addComponent = (e: any) => {
   const id: number = parseInt(e.dataTransfer.getData("id") || "0")
-  lowCode.dom.push(lowSetting.sideBar[id])
+  const dom = useDeepClone(lowSetting.sideBar[id])
+  dom.id = Date.now()
+  lowCode.dom.push(dom)
 }
 
 const test = () => {
   lowCode.data["value"] += "1"
+  lowCode.data["children"] += "1"
 }
 </script>
 <style lang="scss" scoped>
@@ -55,7 +59,7 @@ $bg: #ffffff;
       width: 100%;
       height: 10%;
       padding: 8px;
-      border-bottom: 1px solid #f3f3f3;
+      border-bottom: 2px solid #f3f3f3;
     }
     .component-show {
       width: 100%;
@@ -65,6 +69,9 @@ $bg: #ffffff;
       align-content: flex-start;
       flex-wrap: wrap;
       overflow: auto;
+      .show-main {
+        background: #f2f2f2;
+      }
     }
   }
 }

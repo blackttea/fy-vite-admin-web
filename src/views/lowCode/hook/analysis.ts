@@ -1,6 +1,6 @@
 import * as antd from "ant-design-vue"
 import { useLowCodeHook } from "@/store/modules/lowCode"
-
+import test from "../component/test.vue"
 interface Props {
   [index: string]: Function
 }
@@ -9,14 +9,12 @@ class Analysis {
   handleData(bind: any, dom: any) {
     const lowCodeStore = useLowCodeHook()
     for (const item of dom.setting["data"]) {
+      const data_name = `${item.name}_${dom.id}`
       if (item.type === "model") {
-        Object.assign(bind, {
-          [`onUpdate:${item.name}`]: (value: any) => {
-            lowCodeStore.data[item.name] = value
-          }
-        })
-        if (!lowCodeStore.data[item.name]) lowCodeStore.data[item.name] = item.value
-        Object.assign(bind, { [item.name]: lowCodeStore.data[item.name] })
+        Object.assign(bind, { [item.name]: lowCodeStore.data[data_name] })
+      }
+      if (item.name === "children") {
+        Object.assign(dom, { children: lowCodeStore.data[data_name] })
       }
     }
   }
@@ -41,6 +39,7 @@ class Analysis {
   getTag(name: string) {
     // @ts-ignore
     if (antd[name]) return antd[name]
+    else if (name === "test") return test
     else return name
   }
 }
