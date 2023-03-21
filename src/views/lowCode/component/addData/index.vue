@@ -1,5 +1,6 @@
 <template>
   <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" @finish="onFinish">
+    <div class="tip">#名称值不可重复</div>
     <a-space
       v-for="(data, index) in dynamicValidateForm.data"
       :key="data.id"
@@ -15,6 +16,16 @@
         }"
       >
         <a-select v-model:value="data.type" @change="typeChange(index)" :options="typeOption" style="width: 130px" />
+      </a-form-item>
+      <a-form-item
+        label="key"
+        :name="['data', index, 'key']"
+        :rules="{
+          required: true,
+          message: 'Missing name'
+        }"
+      >
+        <a-input v-model:value="data.key" :disabled="data.type !== 'model'" />
       </a-form-item>
       <a-form-item
         label="名称"
@@ -48,6 +59,7 @@ import { useLowCodeStore } from "@/store/modules/lowCode"
 interface Data {
   type: "normal" | "model" | "children"
   name: string
+  key?: string
   value: any
   id: number
 }
@@ -88,6 +100,7 @@ const addData = () => {
     type: "normal",
     name: "",
     value: "",
+    key: "",
     id: getMax()
   })
 }
@@ -123,6 +136,10 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
+.tip {
+  color: #ff0000;
+  margin-bottom: 8px;
+}
 .add-data-btn {
   width: 120px;
 }
