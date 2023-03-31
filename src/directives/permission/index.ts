@@ -21,3 +21,40 @@ export const permission: Directive = {
     }
   }
 }
+
+// 节流指令 一段时间内只执行一次
+export const throttle: Directive = {
+  beforeMount(el: HTMLElement, binding: any) {
+    let timer: any = null
+    const { method, fn, delay } = binding.value
+    el.addEventListener(method || "click", (event: Event) => {
+      const delayTime = delay || 2000
+      if (!timer) {
+        timer = setTimeout(() => {
+          fn()
+          clearTimeout(timer)
+          timer = null
+        }, delayTime)
+      } else {
+        event?.stopImmediatePropagation() // 阻止事件冒泡
+      }
+    })
+  }
+}
+
+export const debounce: Directive = {
+  beforeMount(el: HTMLElement, binding: any) {
+    let timer: any = null
+    const { method, fn, delay } = binding.value
+    el.addEventListener(method || "click", () => {
+      const delayTime = delay || 2000
+      if (timer != null) {
+        clearTimeout(timer)
+        timer = null
+      }
+      timer = setTimeout(() => {
+        fn()
+      }, delayTime)
+    })
+  }
+}

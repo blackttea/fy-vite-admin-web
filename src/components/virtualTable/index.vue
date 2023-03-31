@@ -24,33 +24,26 @@ const emit = defineEmits(["search"])
 const loading = ref<boolean>(false)
 const virRef = ref<any>()
 const childHeight = ref<number>(0)
-//容器真实高度
 const containerHeight = ref(0)
-//当前状态的索引
 const startKey = ref(0)
-//视窗内应该显示的 DOM 数量
 const showItemNum = ref(0)
-//容器dom节点
 const wrapper = ref<any>(null)
-//容器高度
 const wrapperHeight = ref<number>(0)
 const itemStyle = reactive({})
 
 //片段容器偏移量
 const scrollTopWrapper = ref<number>(0)
-//滚动事件
 const wrapperScroll = (e: any) => {
   //计算当前状态的索引
   const calRow = Math.floor(e.target.scrollTop / childHeight.value)
   const tempNum = calRow * props.qpr
 
   const isOnePage = Math.ceil(props.data?.length / props.qpr) <= Math.ceil(wrapperHeight.value / childHeight.value)
-  //当前状态的索引发生变化才触发视图层刷新
   if (tempNum !== startKey.value || isOnePage) {
     const clientHeight = e.target.clientHeight
     const scrollTop = e.target.scrollTop
     const scrollHeight = e.target.scrollHeight
-    if (clientHeight + scrollTop >= scrollHeight - 120 && !loading.value) {
+    if (clientHeight + scrollTop >= scrollHeight - childHeight.value && !loading.value) {
       loading.value = true
       emit("search")
     }
@@ -58,7 +51,7 @@ const wrapperScroll = (e: any) => {
     scrollTopWrapper.value = e.target.scrollTop - (e.target.scrollTop % childHeight.value)
   }
 }
-//对数据进行切片处理方法
+
 const showItem = computed(() => {
   return [...props.data.slice(startKey.value, showItemNum.value + startKey.value + 3)]
 })

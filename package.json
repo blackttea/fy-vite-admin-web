@@ -26,6 +26,8 @@
     "@element-plus/icons-vue": "^2.0.10",
     "@kangc/v-md-editor": "^2.3.15",
     "@micro-zoe/micro-app": "^0.8.10",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "^3.2.15",
     "axios": "^1.2.2",
     "dayjs": "^1.11.7",

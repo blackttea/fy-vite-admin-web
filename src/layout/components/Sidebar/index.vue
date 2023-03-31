@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue"
+import { computed } from "vue"
 import { useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { useAppStore } from "@/store/modules/app"
@@ -22,8 +22,6 @@ const tagsViewStore = useTagsViewStore()
 const router = useRouter()
 
 const { showSidebarLogo } = storeToRefs(settingsStore)
-
-const activeMenu = ref<string>()
 
 const isCollapse = computed(() => {
   return settingsStore.mode === "vertical" ? !appStore.sidebar.opened : false
@@ -57,7 +55,7 @@ const selectMenu = (menu: string) => {
       return
     }
   }
-  activeMenu.value = `${menu}`
+  permissionStore.activeMenu = `${menu}`
   router.push(path)
 }
 </script>
@@ -67,7 +65,7 @@ const selectMenu = (menu: string) => {
     <SidebarLogo v-if="showSidebarLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper" :class="{ menuHorizontal: settingsStore.mode === 'horizontal' }">
       <el-menu
-        :default-active="activeMenu"
+        :default-active="permissionStore.activeMenu"
         :collapse="isCollapse"
         :background-color="v3SidebarMenuBgColor"
         :text-color="v3SidebarMenuTextColor"

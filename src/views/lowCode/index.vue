@@ -5,9 +5,7 @@
         <sidebar />
       </div>
       <div class="component-main">
-        <div class="component-setting">
-          <a-button @click="test">test</a-button>
-        </div>
+        <div class="component-setting" />
         <div class="component-show" @drop="addComponent" @dragover="(e) => e.preventDefault()">
           <low class="show-main" />
         </div>
@@ -31,11 +29,6 @@ const addComponent = (e: any) => {
   const dom = useDeepClone(lowSetting.sideBar[id])
   dom.id = Date.now()
   lowCode.dom.push(dom)
-}
-
-const test = () => {
-  lowCode.data["value"] += "1"
-  lowCode.data["children"] += "1"
 }
 </script>
 <style lang="scss" scoped>

@@ -18,6 +18,7 @@ export const usePermissionStore = defineStore("permission", () => {
   const menuList = ref<Array<Menu>>([])
   const parentList = ref<Array<Menu>>([])
   const menuPer = ref<any>({})
+  const activeMenu = ref<string>("")
 
   const m: Menu[] = []
   const pList: number[] = []
@@ -88,7 +89,7 @@ export const usePermissionStore = defineStore("permission", () => {
     const menuRoute1 = useFormatTree(mCopy1, "id", "parentId", "children", reFormData1, undefined)
     for (const item of menuRoute1) parentList.value.push(item)
   }
-  return { routes, menu, menuList, getMenu, parentList, menuPer }
+  return { routes, menu, menuList, getMenu, parentList, menuPer, activeMenu }
 })
 
 /** 在 setup 外使用 */

@@ -19,12 +19,12 @@ router.beforeEach(async (to, _from, next) => {
   if (getToken()) {
     if (to.path === "/login") {
       // 如果已经登录，并准备进入 Login 页面，则重定向到主页
-      next({ path: "/" })
-      userStore.currentRoute = "/"
+      userStore.currentRoute = to.path
+      next()
       NProgress.done()
     } else {
       // 检查用户是否已获得其权限角色
-      if (userStore.roles.length === 0) {
+      if (permissionStore.menu.length === 0) {
         try {
           if (asyncRouteSettings.open) {
             await userStore.getInfo()
@@ -46,6 +46,7 @@ router.beforeEach(async (to, _from, next) => {
           NProgress.done()
         }
       } else {
+        userStore.currentRoute = to.path
         next()
       }
     }
