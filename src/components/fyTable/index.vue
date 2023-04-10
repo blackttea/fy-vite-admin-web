@@ -1,6 +1,8 @@
 <template>
   <div class="fy-table-container">
-    <div class="fy-toolbar" />
+    <div class="fy-toolbar">
+      <component v-for="item in toolbar" :is="getBtn(item)" :key="item.id" />
+    </div>
     <div class="fy-table-main" ref="table">
       <vxe-grid v-bind="gridOptions">
         <template v-for="item in slot" v-slot:[item]="{ row }">
@@ -14,6 +16,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from "vue"
 import { VxeGridProps } from "vxe-table"
+import * as Antd from "ant-design-vue"
+import useGetType from "@/hooks/useGetType"
 
 const slot = reactive<string[]>([])
 const table = ref()
@@ -48,6 +52,11 @@ const gridOptions = reactive<VxeGridProps>(
   )
 )
 
+const getBtn = (tool: any) => {
+  if (useGetType(tool.tag, "string")) return Antd[tool.tag]
+  else return tool.tag
+}
+
 const initSlot = () => {
   slot.length = 0
   const column: any[] = gridOptions.columns || []
@@ -77,5 +86,9 @@ onMounted(() => {
 .fy-table-container {
   width: 100%;
   height: 100%;
+}
+
+.fy-toolbar {
+  display: flex;
 }
 </style>

@@ -1,7 +1,6 @@
 import store from "@/store"
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { BarsOutlined, CloseOutlined, MenuOutlined } from "@ant-design/icons-vue"
 
 export const useLowSetting = defineStore("lowSetting", () => {
   const sideBar = ref<any[]>([])
@@ -11,7 +10,7 @@ export const useLowSetting = defineStore("lowSetting", () => {
       {
         id: 0,
         type: "div",
-        icon: BarsOutlined,
+        icon: "div",
         props: {
           style: {
             background: "#00d9ff",
@@ -25,7 +24,7 @@ export const useLowSetting = defineStore("lowSetting", () => {
       {
         id: 1,
         type: "Button",
-        icon: CloseOutlined,
+        icon: "button",
         props: {
           style: {
             width: "150px"
@@ -38,25 +37,10 @@ export const useLowSetting = defineStore("lowSetting", () => {
       {
         id: 2,
         type: "Input",
-        icon: MenuOutlined,
+        icon: "input",
         props: {
           style: {
             width: "150px"
-          }
-        },
-        children: null,
-        setting: {}
-      },
-      {
-        id: 3,
-        type: "test",
-        icon: MenuOutlined,
-        props: {
-          style: {
-            width: "150px"
-          },
-          onTest: () => {
-            debugger
           }
         },
         children: null,

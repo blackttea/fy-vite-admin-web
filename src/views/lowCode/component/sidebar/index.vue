@@ -7,7 +7,7 @@
       @dragstart="drag($event, item.id)"
       draggable="true"
     >
-      <component :is="item.icon" />
+      <svg-icon :name="item.icon" prefix="icon-lowCode" />
     </div>
   </div>
 </template>
@@ -38,7 +38,6 @@ const drag = (e: any, id: number) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #ffffff;
     border-radius: 1px;
   }
 }

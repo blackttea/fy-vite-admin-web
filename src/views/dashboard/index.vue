@@ -4,6 +4,25 @@ import { useFetchSelect } from "@/components/hook/useFetchSelect"
 import { ref, reactive } from "vue"
 import fyTable from "@/components/fyTable/index.vue"
 
+interface DataItem {
+  href: string
+  title: string
+  avatar: string
+  description: string
+  content: string
+}
+const listData: DataItem[] = []
+for (let i = 0; i < 3; i++) {
+  listData.push({
+    href: "https://www.antdv.com/",
+    title: `ant design vue part ${i}`,
+    avatar: "https://joeschmoe.io/api/v1/random",
+    description: "Ant Design, a design language for background applications, is refined by Ant UED Team.",
+    content:
+      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
+  })
+}
+
 const value = ref("")
 const getRemoteData = (): any => {
   return new Promise((resolve) => {
@@ -49,16 +68,26 @@ const gridOptions = reactive({
     { id: 10008, name: "Test8", nickname: "T8", role: "Develop", sex: "Man", age: 35, address: "Shenzhen" }
   ]
 })
+
+// const loading = ref<boolean>(false)
+//
+// const actions = [
+//   { type: "star-outlined", text: "156" },
+//   { type: "like-outlined", text: "156" },
+//   { type: "message-outlined", text: "2" }
+// ]
 </script>
 
 <template>
-  <div class="dash-container">
-    <upload />
-    <a-button v-permission="'add'" v-throttle="{ fn: clickBtn.bind(55) }">add</a-button>
-    <a-button v-permission="'delete'">delete</a-button>
-    <a-select v-model:value="value" v-bind="selectBind" />
-    <fy-table :gridOption="gridOptions" v-if="false" />
-  </div>
+  <padding style="background: #ffffff !important">
+    <div class="dash-container">
+      <upload />
+      <a-button v-permission="'add'" v-throttle="{ fn: clickBtn.bind(55) }">add</a-button>
+      <a-button v-permission="'delete'">delete</a-button>
+      <a-select v-model:value="value" v-bind="selectBind" />
+      <fy-table :gridOption="gridOptions" />
+    </div>
+  </padding>
 </template>
 
 <style lang="scss" scoped>

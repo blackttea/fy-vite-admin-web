@@ -88,6 +88,9 @@ export const usePermissionStore = defineStore("permission", () => {
     }
     const menuRoute1 = useFormatTree(mCopy1, "id", "parentId", "children", reFormData1, undefined)
     for (const item of menuRoute1) parentList.value.push(item)
+    menu.value.sort((a: any, b: any) => {
+      return a.seq - b.seq
+    })
   }
   return { routes, menu, menuList, getMenu, parentList, menuPer, activeMenu }
 })

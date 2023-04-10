@@ -66,7 +66,6 @@ const handleOk = () => {
 .setting-container {
   clear: both;
   display: inline-block;
-  margin: 8px 8px 0 8px;
 }
 .component-setting {
   width: 100%;
