@@ -10,7 +10,7 @@ import { message } from "ant-design-vue"
 const view = import.meta.glob("../../**/**/**.vue")
 import { useUserStore } from "@/store/modules/user"
 
-const _menuPrefix = "../../views"
+const _menuPrefix = "../../views/"
 
 export const usePermissionStore = defineStore("permission", () => {
   const routes = ref<RouteRecordRaw[]>([])
@@ -62,7 +62,7 @@ export const usePermissionStore = defineStore("permission", () => {
     }
     const reFormData = (data: any): void => {
       if (!data["component"] || data["component"] === "../layout/indexCopy.vue") data["children"] = []
-      data["component"] = view[data["component"]] || data["component"]
+      data["component"] = view[`${_menuPrefix}${data["component"]}.vue`] || data["component"]
       data["meta"] = {}
       const showList = ["hidden", "title", "svgIcon", "elIcon"]
       for (const item of showList) if (data[item] !== undefined) data["meta"][item] = data[item]
