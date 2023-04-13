@@ -14,20 +14,20 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "/redirect/:path(.*)",
-        component: () => import("@/views/stable/redirect/index.vue")
+        component: () => import("@/views/system/redirect/index.vue")
       }
     ]
   },
   {
     path: "/403",
-    component: () => import("@/views/stable/error-page/403.vue"),
+    component: () => import("@/views/system/error-page/403.vue"),
     meta: {
       hidden: true
     }
   },
   {
     path: "/404",
-    component: () => import("@/views/stable/error-page/404.vue"),
+    component: () => import("@/views/system/error-page/404.vue"),
     meta: {
       hidden: true
     },
@@ -35,7 +35,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/login",
-    component: () => import("@/views/stable/login/index.vue"),
+    component: () => import("@/views/system/login/index.vue"),
     meta: {
       hidden: true
     }
@@ -43,7 +43,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     name: "register",
     path: "/register",
-    component: () => import("@/views/stable/login/register.vue"),
+    component: () => import("@/views/system/login/register.vue"),
     meta: {
       hidden: true
     }
@@ -63,7 +63,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "/system",
-        component: view["../views/stable/system/index.vue"],
+        component: view["../views/system/system/index.vue"],
         name: "system",
         meta: {
           title: "系统配置",
